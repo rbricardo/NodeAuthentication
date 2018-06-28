@@ -1,8 +1,9 @@
-const express = require('express'),
+const 
+    express = require('express'),
     jwt = require('jsonwebtoken'),
     authConfig = require('../../config/auth.json'),
     crypto = require('crypto');
-router = express.Router();
+    router = express.Router();
 
 const User = require('../models/userModel');
 const mailer = require('../../modules/mailer');

@@ -2,6 +2,8 @@ const express = require('express'),
     bodyParser = require('body-parser'),
     app = express();
 
+    require('./src/db');
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }));
 

@@ -9,7 +9,7 @@ const UserSchema = new Schema({
     },
     name: {
         type: String,
-        required: true
+        // required: true
     },
     email: {
         type: String,
@@ -20,11 +20,11 @@ const UserSchema = new Schema({
     },
     gender: {
         type: String,
-        required: true,
+        // required: true,
     },
     password: {
         type: String,
-        required: true,
+        // required: true,
         select: false,
     },
     passwordResetToken: {
@@ -37,35 +37,52 @@ const UserSchema = new Schema({
     },
     cpf: {
         type: String,
-        required: true,
+        // required: true,
         trim: true,
         // unique: true,
     },
     matriculation: {
         type: String,
-        required: true,
+        // required: true,
     },
     photo: {
         type: String,
     }, // URL
-    rating: Number,
+    rating: {
+        String,
+    },
     type: {
         type: String,
-        enum: ['motorista', 'passageiro', 'todos'],
-        required: true,
+        // required: true,
     },
-    vehicle: {
-        licence: String,
-        color: String,
-        Model: String,
-        Year: String,
-        photo: String, // URL 
+    vehicle: [{
+        model: {
+            type: String,
+            // required: true
+        },
+        color: {
+            type: String,
+            //  required: true
+        },
+        licence: {
+            type: String,
+            // require: true,
+        },
+        year: {
+            type: String,
+            // require: true
+        },
+        photo: {
+            type: String, // URL 
+            // require: true
+        },
         type: {
             type: String,
-            enum: ['carro', 'moto']
+            enum: ['carro', 'moto'],
+            // require: true
         },
-    },
-    startPlace: {
+    }],
+    geoLocation: {
         latitude: {
             type: String
         },
@@ -75,11 +92,11 @@ const UserSchema = new Schema({
     }, // Latitude e longitude
     birthDate: {
         type: Date,
-        required: true
+        // required: true
     },
     phone: {
         type: String,
-        required: true
+        // required: true
     },
     created: {
         type: Date,

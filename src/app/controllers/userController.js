@@ -1,11 +1,12 @@
-const 
+const
     express = require('express'),
     jwt = require('jsonwebtoken'),
     authConfig = require('../../config/auth.json'),
-    crypto = require('crypto');
+    crypto = require('crypto'),
     router = express.Router();
 
-const User = require('../models/userModel');
+const User = require('../models/userModel'),
+    Vehicle = require('../models/vehicleModel');
 const mailer = require('../../modules/mailer');
 
 generateToken = (params = {}) => {
@@ -15,34 +16,27 @@ generateToken = (params = {}) => {
 }
 
 // LIST
-router.get('/userslist', (req, res) => {
-    User.find({}, (err, users) => {
-        var userMap = {};
+router.get('/userslist', async (req, res) => {
+    try {
+        const users = await User.find().populate('vehicle');
+        res.send(users);
+    } catch (error) {
+        console.log(error)
+        return res.status(400).send({ error: 'error to list users' });
+    }
 
-        users.forEach(user => {
-            userMap[user._id] = user;
-        });
-
-        res.send(userMap);
-    });
 });
 
 // SIGN UP
-router.post('/signup', (req, res) => {
-
-    res.status(200);
-    const user = new User(req.body);
-
-    user.save(err => {
-        if (err) return res.status(500).send(err);
-        return res.status(200).send({
-            user,
-            token: generateToken({ id: user.id })
-        });
-    });
-
-
-
+router.post('/signup', async (req, res) => {
+    try {
+        console.log(req)
+        const user = await User.create(req.body);
+        return res.status(200).send(user);
+    } catch (error) {
+        console.log(error);
+        return res.status(400).send({ error: 'error to create user' });
+    }
 })
 
 // SIGN IN
@@ -58,7 +52,7 @@ router.post('/signin', async (req, res) => {
     if (user.password !== password)
         return res.status(400).send({ error: 'Senha inválida' })
 
-    res.send({ user, token: generateToken({ id: user.id }) })
+    res.status(200).send({ user, token: generateToken({ id: user.id }) })
 });
 
 // EDIT USER
